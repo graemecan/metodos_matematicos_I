@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<title>Graficar un número complejo</title>
+
+<!-- PyScript -->
+      <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+      <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+
+<style>
+
+body {
+    background-color: #fcfcfc;
+    padding-top: 0px;
+    min-height: 100vh;
+    margin:0;
+    display:flex;
+    flex-direction:column;
+}
+
+</style>
+
+</head>
+
+<body>
+<py-config type="json">
+    {
+        "packages": ["numpy", "matplotlib"]
+    }
+</py-config>
+
+<py-script>
+from js import document
+import matplotlib.pyplot as plt
+
+def convert(*args, **kws):
+
+    zval = document.getElementById('zval').value;
+
+    xval = float(zval[1:-1].split(",")[0])
+    yval = float(zval[1:-1].split(",")[1])
+
+    fig = plot_it(xval, yval)
+    pyscript.write("plot_space",fig)
+
+def plot_it(x, y):
+    x = float(x)
+    y = float(y)
+    fig, ax = plt.subplots()
+    ax.set(xlim=(-4.0,4.0), ylim=(-4.0,4.0))
+    ax.set_aspect('equal')
+    plt.plot([0.0,x], [0.0,y], 'bo-')
+    fig
+    return fig
+</py-script>
+
+<div class="container">
+
+<h1 class="text-center">Graficar un número complejo</h1>
+<p><h3 class="text-center">Entregar un número complejo como (x,y):</h3>
+
+<div style="float:left;">
+  <label for="zval">Número complejo z:</label>
+  <input id="zval" name="zval" type="text" value="0.0" style="width: 150px;" />
+</div>
+
+<!--<div style="float:left;">
+  <label for="name">y coordinate:</label>
+  <input id="yval" name="yval" class="form-control" type="number" value="0.0" style="width: 150px;" />
+</div>-->
+
+<div style="clear:both;">&nbsp;</div>
+
+<div>
+<button id="plot" type="submit" class="btn btn-info" py-click="convert()">Plot</button>
+</div>
+
+</div>
+
+<div style="width:800px;" id="plot_space"></div>
+
+</body>
+</html>
+
