@@ -34,7 +34,7 @@ body {
 from js import document
 import matplotlib.pyplot as plt
 
-def convert(*args, **kws):
+def make_plot(*args, **kws):
 
     zval = document.getElementById('zval').value;
 
@@ -62,7 +62,7 @@ def plot_it(x, y):
 
 <div style="float:left;">
   <label for="zval">Número complejo z:</label>
-  <input id="zval" name="zval" type="text" value="0.0" style="width: 150px;" />
+  <input id="zval" name="zval" type="text" value="(0,0)" style="width: 150px;" />
 </div>
 
 <!--<div style="float:left;">
@@ -73,7 +73,7 @@ def plot_it(x, y):
 <div style="clear:both;">&nbsp;</div>
 
 <div>
-<button id="plot" type="submit" class="btn btn-info" py-click="convert()">Plot</button>
+<button id="plot" type="submit" class="btn btn-info" py-click="make_plot()">Graficar</button>
 </div>
 
 </div>

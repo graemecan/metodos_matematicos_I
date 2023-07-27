@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<title>Sumar números complejos</title>
+
+<!-- PyScript -->
+      <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+      <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+
+<style>
+
+body {
+    background-color: #fcfcfc;
+    padding-top: 0px;
+    min-height: 100vh;
+    margin:0;
+    display:flex;
+    flex-direction:column;
+}
+
+</style>
+
+</head>
+
+<body>
+<py-config type="json">
+    {
+        "packages": ["numpy", "matplotlib"]
+    }
+</py-config>
+
+<py-script>
+from js import document
+import matplotlib.pyplot as plt
+
+def make_plot(*args, **kws):
+
+    zval1 = document.getElementById('zval1').value;
+    zval2 = document.getElementById('zval2').value;
+
+    xval1 = float(zval1[1:-1].split(",")[0])
+    yval1 = float(zval1[1:-1].split(",")[1])
+
+    xval2 = float(zval2[1:-1].split(",")[0])
+    yval2 = float(zval2[1:-1].split(",")[1])
+
+    fig = plot_it(xval1, yval1, xval2, yval2)
+    pyscript.write("plot_space",fig)
+
+def plot_it(x1, y1, x2, y2):
+    fig, ax = plt.subplots()
+    ax.set(xlim=(-4.0,4.0), ylim=(-4.0,4.0))
+    ax.set_aspect('equal')
+    #ax.set_xticks([])
+    #ax.set_yticks([])
+    plt.plot([0.0,x1], [0.0,y1], 'bo-')
+    plt.plot([0.0,x2], [0.0,y2], 'ro-')
+    plt.plot([0.0,x1+x2], [0.0,y1+y2], 'go-')
+    plt.plot([x1,x1+x2], [y1,y1+y2], 'b--')
+    plt.plot([x2,x1+x2], [y2,y1+y2], 'r--')
+    fig
+    return fig
+</py-script>
+
+<div class="container">
+
+<h1 class="text-center">Sumar números complejos</h1>
+<p><h3 class="text-center">Entregar dos números complejos como (x,y).</h3>
+
+<div style="float:left;">
+  <label for="zval1" style="color:blue">Número complejo z<sub>1</sub>:</label>
+  <input id="zval1" name="zval1" class="form-control" type="text" value="(0,0)" style="width: 150px;" />
+</div>
+
+<div style="float:left;">
+  <label for="zval2" style="color:red">Número complejo z<sub>2</sub>:</label>
+  <input id="zval2" name="zval2" class="form-control" type="text" value="(0,0)" style="width: 150px;" />
+</div>
+
+<div style="clear:both;">&nbsp;</div>
+
+<div>
+<button id="plot" type="submit" class="btn btn-info" py-click="make_plot()">Graficar</button>
+</div>
+
+</div>
+
+<div style="width:800px;" id="plot_space"></div>
+
+</body>
+</html>
+
