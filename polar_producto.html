@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<title>Multiplicar números complejos</title>
+
+<!-- PyScript -->
+      <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+      <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+
+<style>
+
+body {
+    background-color: #fcfcfc;
+    padding-top: 0px;
+    min-height: 100vh;
+    margin:0;
+    display:flex;
+    flex-direction:column;
+}
+
+</style>
+
+</head>
+
+<body>
+<py-config type="json">
+    {
+        "packages": ["numpy", "matplotlib"]
+    }
+</py-config>
+
+<py-script>
+from js import document
+import matplotlib.pyplot as plt
+import numpy as np
+
+def make_plot(*args, **kws):
+
+    r1_val = document.getElementById('r1').value;
+    theta1_val = document.getElementById('theta1').value;
+
+    r1 = float(r1_val)
+    theta1 = (float(theta1_val)/180.0)*np.pi
+
+    r2_val = document.getElementById('r2').value;
+    theta2_val = document.getElementById('theta2').value;
+
+    r2 = float(r2_val)
+    theta2 = (float(theta2_val)/180.0)*np.pi
+
+    fig = plot_it(r1, r2, theta1, theta2)
+    pyscript.write("plot_space",fig)
+
+def plot_it(r1, r2, theta1, theta2):
+    fig, ax = plt.subplots(subplot_kw={'projection':'polar'})
+    #ax.set_rmax(4.0)
+    ax.plot([0.0,theta1], [0.0,r1], 'bo-')
+    ax.plot([0.0,theta2], [0.0,r2], 'ro-')
+    ax.plot([0.0,theta1+theta2], [0.0,r1*r2], 'go-')
+    ax.grid(True)
+    fig
+    return fig
+</py-script>
+
+<div class="container">
+
+<h1 class="text-center">Forma polar</h1>
+<p><h3 class="text-center">Ingresar un número complejo en forma polar.</h3>
+
+<div style="float:left;">
+  <label for="r1" style="color:blue">r<sub>1</sub>:</label>
+  <input id="r1" name="r1" class="form-control" type="text" value="0.0" style="width: 150px;" />
+</div>
+
+<div style="float:left;">
+  <label for="theta1" style="color:blue">&theta;<sub>1</sub> (en grados):</label>
+  <input id="theta1" name="theta1" class="form-control" type="text" value="0.0" style="width: 150px;" />
+</div>
+
+<div style="clear:both;">&nbsp;</div>
+
+<div style="float:left;">
+  <label for="r2" style="color:red">r<sub>2</sub>:</label>
+  <input id="r2" name="r2" class="form-control" type="text" value="0.0" style="width: 150px;" />
+</div>
+
+<div style="float:left;">
+  <label for="theta2" style="color:red">&theta;<sub>2</sub> (en grados):</label>
+  <input id="theta2" name="theta2" class="form-control" type="text" value="0.0" style="width: 150px;" />
+</div>
+
+<div style="clear:both;">&nbsp;</div>
+
+<div>
+<button id="plot" type="submit" class="btn btn-info" py-click="make_plot()">Graficar</button>
+</div>
+
+<div style="clear:both;">&nbsp;</div>
+
+</div>
+
+<div style="width:800px;" id="plot_space"></div>
+
+</body>
+</html>
+

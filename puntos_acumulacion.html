@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<title>Puntos de acumulación</title>
+
+<!-- PyScript -->
+      <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+      <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+
+<style>
+
+body {
+    background-color: #fcfcfc;
+    padding-top: 0px;
+    min-height: 100vh;
+    margin:0;
+    display:flex;
+    flex-direction:column;
+}
+
+</style>
+
+</head>
+
+<body>
+<py-config type="json">
+    {
+        "packages": ["numpy", "matplotlib"]
+    }
+</py-config>
+
+<py-script>
+from js import document
+import matplotlib.pyplot as plt
+
+def make_plot(*args, **kws):
+
+    nval = document.getElementById('nval').value;
+    rango = document.getElementById('rango').value;
+    c = document.getElementById('centre').value;
+
+    nval = int(nval)
+    rango = float(rango)
+    cx = float(c.split(",")[0])
+    cy = float(c.split(",")[1])
+
+    fig = plot_it(nval, rango, cx, cy)
+    pyscript.write("plot_space",fig)
+
+def plot_it(n, rango, cx, cy):
+
+    fig, ax = plt.subplots()
+    ax.set(xlim=(cx-rango,cx+rango), ylim=(cy-rango,cy+rango))
+    ax.set_aspect('equal')
+    #ax.set_xticks([])
+    #ax.set_yticks([])
+    ax.grid(True)
+    for nval in range(1,n):
+        plt.plot(0.0, 1.0/nval, 'bo')
+    fig
+    return fig
+</py-script>
+
+<div class="container">
+
+<h1 class="text-center">Puntos de acumulación</h1>
+<p><h3 class="text-center">Conjunto: i/n (n >= 1)</h3>
+
+<div style="float:left;">
+  <label for="nval" style="color:blue">Ingresar un valor máximo de n:</label>
+  <input id="nval" name="nval" class="form-control" type="text" value="0" style="width: 75px;" />
+</div>
+
+<div style="float:left;">
+  <label for="rango" style="color:blue">Rango para el gráfico:</label>
+  <input id="rango" name="rango" class="form-control" type="text" value="0" style="width: 75px;" />
+</div>
+
+<div style="float:left;">
+  <label for="centre" style="color:blue">Centro del gráfico:</label>
+  <input id="centre" name="centre" class="form-control" type="text" value="0,0" style="width: 150px;" />
+</div>
+
+<div style="clear:both;">&nbsp;</div>
+
+<div>
+<button id="plot" type="submit" class="btn btn-info" py-click="make_plot()">Graficar</button>
+</div>
+
+</div>
+
+<div style="width:800px;" id="plot_space"></div>
+
+</body>
+</html>
+
