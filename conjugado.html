@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-<title>Forma polar</title>
+<title>Conjugado</title>
 
 <!-- PyScript -->
       <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
@@ -33,41 +33,39 @@ body {
 <py-script>
 from js import document
 import matplotlib.pyplot as plt
-import numpy as np
 
 def make_plot(*args, **kws):
 
-    r_val = document.getElementById('r').value;
-    theta_val = document.getElementById('theta').value;
+    zval = document.getElementById('zval').value;
 
-    r = float(r_val)
-    theta = (float(theta_val)/180.0)*np.pi
+    xval = float(zval[1:-1].split(",")[0])
+    yval = float(zval[1:-1].split(",")[1])
 
-    fig = plot_it(r, theta)
+    fig = plot_it(xval, yval)
     pyscript.write("plot_space",fig)
 
-def plot_it(r, theta):
-    fig, ax = plt.subplots(subplot_kw={'projection':'polar'})
-    #ax.set_rmax(4.0)
-    ax.plot([0.0,theta], [0.0,r], 'bo-')
-    ax.grid(True)
+def plot_it(x, y):
+    x_conj = x
+    y_conj = -y
+    fig, ax = plt.subplots()
+    ax.set(xlim=(-4.0,4.0), ylim=(-4.0,4.0))
+    ax.set_aspect('equal')
+    #ax.set_xticks([])
+    #ax.set_yticks([])
+    plt.plot([0.0,x], [0.0,y], 'bo-')
+    plt.plot([0.0,x_conj], [0.0,y_conj], 'ro-')
     fig
     return fig
 </py-script>
 
 <div class="container">
 
-<h1 class="text-center">Forma polar</h1>
-<p><h3 class="text-center">Ingresar un número complejo en forma polar.</h3>
+<h1 class="text-center">Conjugado complejo</h1>
+<p><h3 class="text-center">Entregar un número complejo.</h3>
 
 <div style="float:left;">
-  <label for="r" style="color:blue">Modulo r:</label>
-  <input id="r" name="r" class="form-control" type="text" value="0.0" style="width: 150px;" />
-</div>
-
-<div style="float:left;">
-  <label for="theta" style="color:blue">Argumento (en grados):</label>
-  <input id="theta" name="theta" class="form-control" type="text" value="0.0" style="width: 150px;" />
+  <label for="zval" style="color:blue">Número complejo z:</label>
+  <input id="zval" name="zval" class="form-control" type="text" value="(0,0)" style="width: 150px;" />
 </div>
 
 <div style="clear:both;">&nbsp;</div>
@@ -75,8 +73,6 @@ def plot_it(r, theta):
 <div>
 <button id="plot" type="submit" class="btn btn-info" py-click="make_plot()">Graficar</button>
 </div>
-
-<div style="clear:both;">&nbsp;</div>
 
 </div>
 
