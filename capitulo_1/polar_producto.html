@@ -53,6 +53,7 @@ def make_plot(*args, **kws):
     pyscript.write("plot_space",fig)
 
 def plot_it(r1, r2, theta1, theta2):
+    plt.close()
     fig, ax = plt.subplots(subplot_kw={'projection':'polar'})
     #ax.set_rmax(4.0)
     ax.plot([0.0,theta1], [0.0,r1], 'bo-')

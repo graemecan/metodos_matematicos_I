@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-<title>Graficar un número complejo</title>
+<title>Conjugado</title>
 
 <!-- PyScript -->
       <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
@@ -45,30 +45,29 @@ def make_plot(*args, **kws):
     pyscript.write("plot_space",fig)
 
 def plot_it(x, y):
-    x = float(x)
-    y = float(y)
+    plt.close()
+    x_conj = x
+    y_conj = -y
     fig, ax = plt.subplots()
     ax.set(xlim=(-4.0,4.0), ylim=(-4.0,4.0))
     ax.set_aspect('equal')
+    #ax.set_xticks([])
+    #ax.set_yticks([])
     plt.plot([0.0,x], [0.0,y], 'bo-')
+    plt.plot([0.0,x_conj], [0.0,y_conj], 'ro-')
     fig
     return fig
 </py-script>
 
 <div class="container">
 
-<h1 class="text-center">Graficar un número complejo</h1>
-<p><h3 class="text-center">Entregar un número complejo como (x,y):</h3>
+<h1 class="text-center">Conjugado complejo</h1>
+<p><h3 class="text-center">Entregar un número complejo.</h3>
 
 <div style="float:left;">
-  <label for="zval">Número complejo z:</label>
-  <input id="zval" name="zval" type="text" value="(0,0)" style="width: 150px;" />
+  <label for="zval" style="color:blue">Número complejo z:</label>
+  <input id="zval" name="zval" class="form-control" type="text" value="(0,0)" style="width: 150px;" />
 </div>
-
-<!--<div style="float:left;">
-  <label for="name">y coordinate:</label>
-  <input id="yval" name="yval" class="form-control" type="number" value="0.0" style="width: 150px;" />
-</div>-->
 
 <div style="clear:both;">&nbsp;</div>
 

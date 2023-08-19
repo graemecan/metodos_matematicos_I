@@ -45,6 +45,7 @@ def make_plot(*args, **kws):
     pyscript.write("plot_space",fig)
 
 def plot_it(x, y):
+    plt.close()
     x_inv = x/(x**2 + y**2)
     y_inv = -y/(x**2 + y**2)
     fig, ax = plt.subplots()

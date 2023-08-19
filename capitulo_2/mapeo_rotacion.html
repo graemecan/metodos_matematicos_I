@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<title>Mapeos</title>
+
+<!-- PyScript -->
+      <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+      <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+
+<style>
+
+body {
+    background-color: #fcfcfc;
+    padding-top: 0px;
+    min-height: 100vh;
+    margin:0;
+    display:flex;
+    flex-direction:column;
+}
+
+</style>
+
+</head>
+
+<body>
+<py-config type="json">
+    {
+        "packages": ["numpy", "matplotlib"]
+    }
+</py-config>
+
+<py-script>
+from js import document
+import matplotlib.pyplot as plt
+import numpy as np
+
+def get_values():
+    zval1 = document.getElementById('zval1').value;
+    zval2 = document.getElementById('zval2').value;
+    zval3 = document.getElementById('zval3').value;
+    zval4 = document.getElementById('zval4').value;
+
+    aval = document.getElementById('aval').value;
+
+    xval1 = float(zval1[1:-1].split(",")[0])
+    yval1 = float(zval1[1:-1].split(",")[1])
+
+    xval2 = float(zval2[1:-1].split(",")[0])
+    yval2 = float(zval2[1:-1].split(",")[1])
+
+    xval3 = float(zval3[1:-1].split(",")[0])
+    yval3 = float(zval3[1:-1].split(",")[1])
+
+    xval4 = float(zval4[1:-1].split(",")[0])
+    yval4 = float(zval4[1:-1].split(",")[1])
+
+    xval_tr = float(aval[1:-1].split(",")[0])
+    yval_tr = float(aval[1:-1].split(",")[1])
+
+    coords_x = np.array([xval1,xval2,xval3,xval4])
+    coords_y = np.array([yval1,yval2,yval3,yval4])
+
+    return(coords_x, coords_y, xval_tr, yval_tr)
+
+def make_plot_translate(*args, **kws):
+
+    coords_x, coords_y, xval_t, yval_t = get_values()
+
+    coords_x_t = coords_x + xval_t
+    coords_y_t = coords_y + yval_t
+
+    fig = plot_it(coords_x, coords_y, coords_x_t, coords_y_t)
+    pyscript.write("plot_space",fig)
+
+def make_plot_conjugate(*args, **kws):
+
+    coords_x, coords_y, xval_t, yval_t = get_values()
+
+    coords_x_t = coords_x
+    coords_y_t = -coords_y
+
+    fig = plot_it(coords_x, coords_y, coords_x_t, coords_y_t)
+    pyscript.write("plot_space",fig)
+
+def make_plot_rotate(*args, **kws):
+
+    coords_x, coords_y, xval_r, yval_r = get_values()
+
+    coords_x_r = coords_x*xval_r - coords_y*yval_r
+    coords_y_r = coords_x*yval_r + coords_y*xval_r
+
+    fig = plot_it(coords_x, coords_y, coords_x_r, coords_y_r)
+    pyscript.write("plot_space",fig)
+
+def make_plot_squared(*args, **kws):
+
+    coords_x, coords_y, xval_r, yval_r = get_values()
+
+    coords_x_r = coords_x**2 - coords_y**2
+    coords_y_r = 2.0*coords_x*coords_y
+
+    fig = plot_it(coords_x, coords_y, coords_x_r, coords_y_r)
+    pyscript.write("plot_space",fig)
+
+def plot_it(x, y, xt, yt):
+    plt.close()
+    max_y = np.max(np.abs(y))
+    max_yt = np.max(np.abs(yt))
+    max_y_all = np.max([max_y,max_yt])
+    max_x = np.max(np.abs(x))
+    max_xt = np.max(np.abs(xt))
+    max_x_all = np.max([max_x,max_xt])
+    fig, ax = plt.subplots()
+    ax.set(xlim=(-max_x_all-1.0,max_x_all+1.0), ylim=(-max_y_all-1.0,max_y_all+1.0))
+    ax.set_aspect('equal')
+    ax.grid()
+    for i in range(5):
+        plt.plot((x[i-1],x[i%4]),(y[i-1],y[i%4]), "b")
+        plt.plot((xt[i-1],xt[i%4]),(yt[i-1],yt[i%4]), "g")
+    plt.fill(x, y, "b", alpha=0.3)
+    plt.fill(xt, yt, "g", alpha=0.3)
+    fig
+    return fig
+</py-script>
+
+<div class="container">
+
+<h1 class="text-center">Mapeos: traslación (w = z + a), rotación/escalar (w = z*a), conjugado (w = <span style="text-decoration:overline">z</span>)</h1>
+<p><h3 class="text-center">Ingresar 4 números complejos como vertices de un cuadrilateral (el orden importa para la forma dibujada en el gráfico).</h3>
+
+<div style="float:left;">
+  <label for="zval1" style="color:blue">z<sub>1</sub>:</label>
+  <input id="zval1" name="zval1" class="form-control" type="text" value="(0,0)" style="width: 150px;" />
+</div>
+
+<div style="float:left;">
+  <label for="zval2" style="color:blue">z<sub>2</sub>:</label>
+  <input id="zval2" name="zval2" class="form-control" type="text" value="(0,0)" style="width: 150px;" />
+</div>
+
+<div style="float:left;">
+  <label for="zval3" style="color:blue">z<sub>3</sub>:</label>
+  <input id="zval3" name="zval3" class="form-control" type="text" value="(0,0)" style="width: 150px;" />
+</div>
+
+<div style="float:left;">
+  <label for="zval4" style="color:blue">z<sub>4</sub>:</label>
+  <input id="zval4" name="zval4" class="form-control" type="text" value="(0,0)" style="width: 150px;" />
+</div>
+
+<div style="clear:both;">&nbsp;</div>
+
+<div style="float:left;">
+  <label for="aval" style="color:blue">a:</label>
+  <input id="aval" name="aval" class="form-control" type="text" value="(0,0)" style="width: 150px;" />
+</div>
+
+<div style="clear:both;">&nbsp;</div>
+
+<div style="float:left; width:100px;">
+<button id="translate" type="submit" class="btn btn-info" py-click="make_plot_translate()">Traslación</button>
+</div>
+
+<div style="float:left; width:150px;">
+<button id="rotate" type="submit" class="btn btn-info" py-click="make_plot_rotate()">Rotación/Escalar</button>
+</div>
+
+<div style="float:left; width:100px;">
+<button id="rotate" type="submit" class="btn btn-info" py-click="make_plot_conjugate()">Conjugado</button>
+</div>
+
+<div style="float:left; width:100px;">
+<button id="rotate" type="submit" class="btn btn-info" py-click="make_plot_squared()">Cuadrado</button>
+</div>
+
+</div>
+
+<div style="width:800px;" id="plot_space"></div>
+
+</body>
+</html>
+

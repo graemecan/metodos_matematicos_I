@@ -49,6 +49,7 @@ def make_plot(*args, **kws):
     pyscript.write("plot_space",fig)
 
 def plot_it(x1, y1, x2, y2):
+    plt.close()
     fig, ax = plt.subplots()
     ax.set(xlim=(-4.0,4.0), ylim=(-4.0,4.0))
     ax.set_aspect('equal')

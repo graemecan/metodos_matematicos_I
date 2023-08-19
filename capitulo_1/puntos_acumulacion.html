@@ -49,7 +49,7 @@ def make_plot(*args, **kws):
     pyscript.write("plot_space",fig)
 
 def plot_it(n, rango, cx, cy):
-
+    plt.close()
     fig, ax = plt.subplots()
     ax.set(xlim=(cx-rango,cx+rango), ylim=(cy-rango,cy+rango))
     ax.set_aspect('equal')

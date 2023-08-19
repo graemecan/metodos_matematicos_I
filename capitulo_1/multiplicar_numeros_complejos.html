@@ -49,6 +49,7 @@ def make_plot(*args, **kws):
     pyscript.write("plot_space",fig)
 
 def plot_it(x1, y1, x2, y2):
+    plt.close()
     x3 = x1*x2-y1*y2
     y3 = x1*y2+x2*y1
     fig, ax = plt.subplots()

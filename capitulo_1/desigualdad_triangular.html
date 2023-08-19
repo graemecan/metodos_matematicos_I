@@ -60,6 +60,7 @@ def make_plot(*args, **kws):
     document.getElementById('abs_z1_plus_abs_z2').value = abs_z1_plus_abs_z2;
 
 def plot_it(xval1, xval2, yval1, yval2):
+    plt.close()
     xval3 = xval1 + xval2
     yval3 = yval1 + yval2
     fig, ax = plt.subplots()

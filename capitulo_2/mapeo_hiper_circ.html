@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<title>Mapeos</title>
+
+<!-- PyScript -->
+      <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+      <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+
+<style>
+
+body {
+    background-color: #fcfcfc;
+    padding-top: 0px;
+    min-height: 100vh;
+    margin:0;
+    display:flex;
+    flex-direction:column;
+}
+
+</style>
+
+</head>
+
+<body>
+<py-config type="json">
+    {
+        "packages": ["numpy", "matplotlib"]
+    }
+</py-config>
+
+<py-script>
+from js import document
+import matplotlib.pyplot as plt
+import numpy as np
+
+def get_values():
+    c1 = document.getElementById('c1').value;
+    c1 = float(c1)
+
+    n = document.getElementById('n').value;
+    n = int(n)
+
+    res = 200
+
+    return(c1, res, n)
+
+def make_plot_hyper(*args, **kws):
+
+    c1, res, n = get_values()
+
+    yvals_b1 = np.linspace(-4.0,4.0,res)
+    xvals_b1 = -np.sqrt(c1 + yvals_b1**2)
+
+    yvals_b2 = np.linspace(-4.0,4.0,res)
+    xvals_b2 = np.sqrt(c1 + yvals_b2**2)
+
+    uvals_b1 = np.real((xvals_b1 + 1j*yvals_b1)**n)
+    vvals_b1 = np.imag((xvals_b1 + 1j*yvals_b1)**n)
+
+    uvals_b2 = np.real((xvals_b2 + 1j*yvals_b2)**n)
+    vvals_b2 = np.imag((xvals_b2 + 1j*yvals_b2)**n)
+
+    fig1 = plot_it(xvals_b1, yvals_b1, xvals_b2, yvals_b2, 'b-')
+    pyscript.write("plot_space1",fig1)
+
+    fig2 = plot_it(uvals_b1, vvals_b1, uvals_b2, vvals_b2, 'g-')
+    pyscript.write("plot_space2",fig2)
+
+def make_plot_circle(*args, **kws):
+
+    c1, res, n = get_values()
+
+    theta_z = np.linspace(0.0,np.pi,res)
+
+    yvals_b1 = c1*np.cos(theta_z)
+    xvals_b1 = c1*np.sin(theta_z)
+
+    yvals_b2 = c1*np.cos(-theta_z)
+    xvals_b2 = c1*np.sin(-theta_z)
+
+    uvals_b1 = np.real((xvals_b1 + 1j*yvals_b1)**n)
+    vvals_b1 = np.imag((xvals_b1 + 1j*yvals_b1)**n)
+
+    uvals_b2 = np.real((xvals_b2 + 1j*yvals_b2)**n)
+    vvals_b2 = np.imag((xvals_b2 + 1j*yvals_b2)**n)
+
+    fig1 = plot_it(xvals_b1, yvals_b1, xvals_b2, yvals_b2, 'b-')
+    pyscript.write("plot_space1",fig1)
+
+    fig2 = plot_it(uvals_b1, vvals_b1, uvals_b2, vvals_b2, 'g-')
+    pyscript.write("plot_space2",fig2)
+
+def plot_it(x1, y1, x2, y2, line_string):
+    plt.close()
+    fig, ax = plt.subplots()
+    ax.set(xlim=(-4.0,4.0), ylim=(-4.0,4.0))
+    ax.set_aspect('equal')
+    ax.grid()
+    plt.plot(x1, y1, line_string, alpha=0.3, lw=3.0)
+    plt.plot(x2, y2, line_string, alpha=0.3, lw=3.0)
+    fig
+    return fig
+</py-script>
+
+<div class="container">
+
+<h1 class="text-center">Mapeos: z<sup>n</sup></h1>
+<p><h3 class="text-center">Ingresar parámetro de la hipérbola o radio del círculo.</h3>
+
+<div style="float:left;">
+  <label for="c1" style="color:blue">c<sub>1</sub>:</label>
+  <input id="c1" name="c1" class="form-control" type="text" value=0.0 style="width: 150px;" />
+</div>
+
+<div style="float:left;">
+  <label for="n" style="color:blue">n:</label>
+  <input id="n" name="n" class="form-control" type="text" value=0 style="width: 150px;" />
+</div>
+
+<div style="clear:both;">&nbsp;</div>
+
+<div style="float:left; width:100px;">
+<button id="translate" type="submit" class="btn btn-info" py-click="make_plot_hyper()">Hipérbola</button>
+</div>
+
+<div style="float:left; width:100px;">
+<button id="translate" type="submit" class="btn btn-info" py-click="make_plot_circle()">Círculo</button>
+</div>
+
+</div>
+
+<div style="width:800px; float:left;" id="plot_space1"></div>
+
+<div style="width:800px; float:left;" id="plot_space2"></div>
+
+</body>
+</html>
+
